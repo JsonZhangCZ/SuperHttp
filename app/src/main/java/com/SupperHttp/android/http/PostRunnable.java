@@ -5,9 +5,12 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -19,7 +22,7 @@ import okhttp3.Response;
 /**
  * Created by zhou on 2016/8/24.
  */
-public class PostRunnable<T> implements Runnable {
+public class PostRunnable implements Runnable {
     private static OkHttpClient mOkHttp;
     private static Gson mGson;
     public Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -56,8 +59,11 @@ public class PostRunnable<T> implements Runnable {
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
-//                            T t = getGson().fromJson(str,new TypeToken<T>() {}.getType());
-                            mRequestBean.getHttpCallBack().onSuccess(str);
+                        ParameterizedType type = mRequestBean.getHttpCallBack().getClassT();
+                        Type t = type.getActualTypeArguments()[0];
+                        System.out.println(str);
+//                        Type type = ((ParameterizedType) mRequestBean.getHttpCallBack().getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+                        mRequestBean.getHttpCallBack().onSuccess(getGson().fromJson(str,t));
                     }
                 });
             }

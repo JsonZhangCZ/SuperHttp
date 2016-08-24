@@ -40,9 +40,9 @@ public class HttpClientAgent {
      * @param params   利用可变参数的形式来进行参数书写   params 成对出现必须长度必须是2的整数倍
      * @return 返回本此请求的requestID  规则是本次请求的时间戳
      */
-    public synchronized void sendRequest(Object tag, String url, boolean isPost,Class<?> classz, HttpCallBack callBack,String... params) {
+    public synchronized void sendRequest(Object tag, String url, boolean isPost, HttpCallBack callBack,String... params) {
         RequestBean requestBean = new RequestBean(tag, url, isPost, callBack, params);
-        PostRunnable runnable = new PostRunnable<String>(requestBean);
+        PostRunnable runnable = new PostRunnable(requestBean);
         AsyncHandler.getInstance().excute(AsyncHandler.THREAD_BG_HIGH,runnable);
     }
 }
