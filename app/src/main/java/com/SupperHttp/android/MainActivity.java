@@ -16,8 +16,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        HttpClientAgent.getInstance().sendRequest(this,"http://www.jianshu.com/p/e740196225a4",false,String.class,new HttpCallBack<String>(){
-
+        HttpClientAgent.getInstance().sendRequest(this,"http://api.m-diary.com/api/user/login?",true,String.class,new HttpCallBack<String>(){
             @Override
             public void onNetError() {
                 Toast.makeText(MainActivity.this,"网络错误",Toast.LENGTH_LONG).show();
@@ -32,6 +31,6 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(String s) {
                 Toast.makeText(MainActivity.this,"请求成功 String="+s,Toast.LENGTH_LONG).show();
             }
-        });
+        },"mobile","18210956260","passWord","123456");
     }
 }
