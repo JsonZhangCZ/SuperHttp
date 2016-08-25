@@ -1,5 +1,9 @@
 package com.SupperHttp.android.http;
 
+import com.SupperHttp.android.bean.Login;
+
+import java.lang.reflect.Type;
+
 /**
  * Created by 张臣周 on 2016/8/24.
  */
@@ -9,7 +13,7 @@ public class RequestBean {
     private boolean isPost;
     private HttpCallBack httpCallBack;
     private String params[];
-
+//    public Type login= Login.class;
     public RequestBean(Object tag, String url, boolean isPost, HttpCallBack httpCallBack, String params[]) {
         this.tag = tag;
         this.url = url;
