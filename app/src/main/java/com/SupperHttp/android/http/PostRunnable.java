@@ -49,6 +49,7 @@ public class PostRunnable implements Runnable {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String str = response.body().string();
+                System.out.println(str);
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
