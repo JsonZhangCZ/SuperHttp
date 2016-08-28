@@ -2,8 +2,7 @@ package com.SupperHttp.android.http;
 
 import android.text.TextUtils;
 
-import com.SupperHttp.android.bean.NetBaseBean;
-
+import java.lang.reflect.Type;
 import java.util.HashMap;
 
 import okhttp3.Call;
@@ -16,7 +15,6 @@ import okhttp3.Request;
  */
 public class HttpClientAgent {
     private static HttpClientAgent instance;
-    private static NetBaseBean baseBean;
     private static OkHttpClient mOkHttp;
     private HashMap<Object, Call> callMap;
     private HttpClientAgent(){

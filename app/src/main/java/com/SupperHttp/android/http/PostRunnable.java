@@ -49,19 +49,22 @@ public class PostRunnable implements Runnable {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String str = response.body().string();
-                System.out.println(str);
-                mainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ParameterizedType type = mRequestBean.getHttpCallBack().getClassT();
-                        Type t = type.getActualTypeArguments()[0];
-                        mRequestBean.getHttpCallBack().onSuccess(getGson().fromJson(str,t));
-                        HttpClientAgent.getInstance().removeCallCache(mRequestBean.getTag());
-
-//                        mRequestBean.getHttpCallBack().onSuccess(getGson().fromJson(str, mRequestBean.login));
-                    }
-                });
-            }
+                final NetBaseBean baseBean = getGson().fromJson(str,NetBaseBean.class);
+                    mainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(isOtherError(baseBean.getCode())) {
+                                mRequestBean.getHttpCallBack().onOtherError(baseBean.getInfo());
+                                HttpClientAgent.getInstance().removeCallCache(mRequestBean.getTag());
+                            }else{
+                                ParameterizedType type = mRequestBean.getHttpCallBack().getClassT();
+                                Type t = type.getActualTypeArguments()[0];
+                                mRequestBean.getHttpCallBack().onSuccess(getGson().fromJson(baseBean.getData().toString(),t));
+                                HttpClientAgent.getInstance().removeCallCache(mRequestBean.getTag());
+                            }
+                        }
+                    });
+                }
         });
     }
 
@@ -74,5 +77,13 @@ public class PostRunnable implements Runnable {
             }
         }
         return mGson;
+    }
+
+
+    public boolean isOtherError(int code){
+        if(RespCode.CODE_SUCCESS==code){
+            return false;
+        }
+        return true;
     }
 }
